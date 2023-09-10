@@ -1,25 +1,33 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRef } from 'react';
 import { createPost } from '../api/posts';
 
-export default function CreatePost({ setPageId }) {
+export default function CreatePost() {
   const titleRef = useRef(null);
   const bodyRef = useRef(null);
 
-  const queryClient = useQueryClient();
-
   const createPostMutation = useMutation({
     mutationFn: createPost,
+
+    onMutate: variables => {
+      console.log('@1: ', variables);
+      return { hi: 'hello' }; // context
+    },
     onSuccess: (data, variables, context) => {
-      console.log('@1-1: ', data);
-      console.log('@1-2: ', variables);
-      console.log('@1-3: ', context);
-      queryClient.setQueryData(['posts1', data.id], data);
-      queryClient.invalidateQueries({
-        queryKey: ['posts1'],
-        exact: true,
-      });
-      setPageId(data.id);
+      console.log('@2-1: ', data);
+      console.log('@2-2: ', variables);
+      console.log('@2-3: ', context);
+    },
+    onError: (error, variables, context) => {
+      console.log('@3-1: ', error);
+      console.log('@3-2: ', variables);
+      console.log('@3-3: ', context);
+    },
+    onSettled: (data, error, variables, context) => {
+      console.log('@4-1: ', data);
+      console.log('@4-2: ', error);
+      console.log('@4-3: ', variables);
+      console.log('@4-4: ', context);
     },
   });
 
@@ -33,6 +41,9 @@ export default function CreatePost({ setPageId }) {
     if (!title || !body) return;
 
     createPostMutation.mutate({ title, body });
+
+    titleRef.current.value = '';
+    bodyRef.current.value = '';
   };
 
   // isError, isLoading, isSuccess, isIdle, isPaused
@@ -52,20 +63,11 @@ export default function CreatePost({ setPageId }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor='title'>Title</label>
-          <input
-            id='title'
-            ref={titleRef}
-            disabled={createPostMutation.isLoading}
-            autoFocus
-          />
+          <input id='title' ref={titleRef} autoFocus />
         </div>
         <div>
           <label htmlFor='body'>Body</label>
-          <input
-            id='body'
-            ref={bodyRef}
-            disabled={createPostMutation.isLoading}
-          />
+          <input id='body' ref={bodyRef} />
         </div>
         <button type='submit' disabled={createPostMutation.isLoading}>
           {createPostMutation.isLoading ? 'Loading...' : 'Create'}

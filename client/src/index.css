@@ -46,7 +46,8 @@ article {
   padding: 0.5rem 1.5rem;
 }
 
-button {
+nav button,
+form button {
   border-radius: 8px;
   border: 1px solid gray;
   padding: 0.6em 1.2em;
@@ -54,23 +55,47 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #f9f9f9;
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover,
-li:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+nav button:hover,
+form button:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
 }
-button:focus,
-button:focus-visible {
+li:hover > span {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-weight: bold;
+}
+nav button:focus,
+nav button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.paginate > section {
+  width: 100%;
+  min-height: 180px;
+}
+
+.infinite section {
+  border-bottom: 1px dotted blue;
+}
+
 li {
-  width: 15%;
-  margin: 0.2rem 0;
+  font-size: 1.125rem;
   cursor: pointer;
+}
+
+li span {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
 }
 
 form {
@@ -98,6 +123,25 @@ form label {
   margin: 0.5rem 0 0.2rem;
 }
 
+footer button {
+  all: unset;
+  cursor: pointer;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid gray;
+  border-radius: 8px;
+  color: black;
+  margin-right: 0.5rem;
+}
+
+footer button:active {
+  transform: scale(0.97);
+}
+
+footer button:disabled {
+  color: gray;
+  transform: scale(1);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -107,6 +151,6 @@ form label {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    /* background-color: #f9f9f9; */
   }
 }
